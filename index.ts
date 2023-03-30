@@ -21,7 +21,7 @@ class Stripe implements PaymentVendor{
     }
 }
 
-class Paymob implements PaymentVendor{
+class EgyptianVendor implements PaymentVendor{
     paymentIntent(arg: any): void {
         console.log(`Inside Paymob payment method, arg: ${arg}`);
     }
@@ -33,7 +33,7 @@ class Paymob implements PaymentVendor{
 //Factory to generate object of concrete class based on given information
 class PaymentFactory {
     getPaymentVendor(countryCode: string): PaymentVendor{
-        return (countryCode == Country.EG) ? new Paymob() : new Stripe()
+        return (countryCode == Country.EG) ? new EgyptianVendor() : new Stripe()
     }
 }
 
@@ -41,12 +41,12 @@ class PaymentFactory {
 let paymentFactory: PaymentFactory = new PaymentFactory();
 
 //get an object of Circle and call its draw method.
-let payment1: PaymentVendor = paymentFactory.getPaymentVendor(Country.EG);
+let paymentObjectInsideEgypt: PaymentVendor = paymentFactory.getPaymentVendor(Country.EG);
 
 //call draw method of Circle
-payment1.paymentIntent("heree");
+paymentObjectInsideEgypt.paymentIntent("attempting paying from Egypt through the egyptian vendor");
 
 
 //another try
-let payment2: PaymentVendor = paymentFactory.getPaymentVendor(Country.US);
-payment2.refund("thereee");
+let paymentObjectOutsideEgypt: PaymentVendor = paymentFactory.getPaymentVendor(Country.US);
+paymentObjectOutsideEgypt.refund("attempting paying from outside of Egypt through Stripe");
